@@ -24,30 +24,31 @@ For readability reasons, you should divide error types in multiple small files, 
   }
 */
 func NewError(identifier, message string, attributeKeyValPairs ...interface{}) Eerror {
-	e := eerror{
+	e := Eerror{
 		nil,
 		identifier,
 		message,
 		[]string{},
 		make(map[string]interface{}, len(attributeKeyValPairs)/2),
+		generateUniqueID(),
 	}
 
 	e.WithAttributes(attributeKeyValPairs...)
-	return &e
+	return e
 }
 
 // InContext appends a new context to the error stack. Useful to describe context during error forwarding.
-func (e *eerror) InContext(context string) {
+func (e *Eerror) InContext(context string) {
 	e.contexts = append(e.contexts, context)
 }
 
 // WithAttribute allows attribute set to an error. If any attribute with the same name exists, it will be reset
-func (e *eerror) WithAttribute(name string, value interface{}) {
+func (e *Eerror) WithAttribute(name string, value interface{}) {
 	e.WithAttributes(name, value)
 }
 
 // WithAttributes allow setting multiple attributes at once. If any attribute with the same name exists, they will be reset
-func (e *eerror) WithAttributes(attributeKeyValPairs ...interface{}) {
+func (e *Eerror) WithAttributes(attributeKeyValPairs ...interface{}) {
 	for i, value := range attributeKeyValPairs {
 		if i%2 != 0 {
 			continue
@@ -67,11 +68,11 @@ func (e *eerror) WithAttributes(attributeKeyValPairs ...interface{}) {
 }
 
 // GetAttributes retrieves the attributes map copy
-func (e eerror) GetAttributes() map[string]interface{} {
+func (e Eerror) GetAttributes() map[string]interface{} {
 	return e.attributes
 }
 
 // Id returns the identifier of the error
-func (e eerror) Id() string {
+func (e Eerror) Id() string {
 	return e.identifier
 }

@@ -6,7 +6,7 @@ import (
 )
 
 // Error formats the error to a human readable string, as described by the error interface
-func (e eerror) Error() string {
+func (e Eerror) Error() string {
 	const contextSeparator = "; "
 	var contextString string
 
@@ -18,7 +18,7 @@ func (e eerror) Error() string {
 }
 
 // Map formats the error to a protocol-aware object, marshable without data loss
-func (e eerror) Map() map[string]interface{} {
+func (e Eerror) Map() map[string]interface{} {
 	return map[string]interface{}{
 		"error":      e.Error(),
 		"code":       e.identifier,

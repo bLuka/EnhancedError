@@ -12,30 +12,16 @@ This package ensure the ability to manage errors following this pattern painless
 package eerror
 
 /*
-Eerror interface defines exported methods available to build an enhanced error type.
+Eerror type defines attributes available to build an enhanced error type.
 Enhanced errors allows strict error handling, ensure reproducable errors, and understandable error messages from context args.
 */
-type Eerror interface {
-	error
-
-	Id() string
-	GetAttributes() map[string]interface{}
-	Map() map[string]interface{}
-	Is(interface{}) bool
-
-	InContext(description string)
-	WithAttribute(name string, value interface{})
-	WithAttributes(attributeKeyValPairs ...interface{})
-
-	Copy() Eerror
-}
-
-// eerror struct defines attributes required to implement Eerror interface.
-type eerror struct {
+type Eerror struct {
 	parent interface{}
 
 	identifier string
 	message    string
 	contexts   []string
 	attributes map[string]interface{}
+
+	_instance uint
 }

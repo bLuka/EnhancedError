@@ -85,7 +85,7 @@ func TestFromIs(t *testing.T) {
 	lastEerr = From(nextEerr)
 
 	if !pureEerr.Is(lastEerr) || !lastEerr.Is(pureEerr) {
-		t.Error("Enhanced error Is() method should return true as the last enhanced error is indirectly formed by parsing the first enhanced error instanciation")
+		t.Error("Enhanced error Is() method should return true as the last enhanced error is indirectly formed by parsing the first enhanced error instance")
 	}
 
 	var nextStdError = fmt.Errorf(errorMessage)
@@ -103,7 +103,7 @@ func TestAttribute(t *testing.T) {
 		t.Error("Enhanced error shouldn't possess any attribute after creation\n", err.GetAttributes())
 	}
 
-	secondErr := err.Copy()
+	secondErr := err.Dup()
 	secondErr.WithAttribute("attribute", "Hello world")
 	if len(err.GetAttributes()) > 0 {
 		t.Error("First enhanced error shouldn't possess any attribute\n", err.GetAttributes())
@@ -112,7 +112,7 @@ func TestAttribute(t *testing.T) {
 		t.Error("Second enhanced error should possess a single attribute labeled \"attribute\" containing an \"Hello world\" string\n", secondErr.GetAttributes())
 	}
 
-	thirdErr := err.Copy()
+	thirdErr := err.Dup()
 	thirdErr.WithAttribute("attribute", "overwritten")
 	if len(secondErr.GetAttributes()) != 1 || secondErr.GetAttributes()["attribute"].(string) != "Hello world" {
 		t.Error("Third enhanced error should still possess a single attribute labeled \"attribute\" containing an \"Hello world\" string\n", thirdErr.GetAttributes())
