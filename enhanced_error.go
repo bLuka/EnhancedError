@@ -3,11 +3,11 @@ Package eerror (enhanced error) describes a new type allowing to handle, process
 
 Errors should always be composed by four major components:
  - an identifier ("E_PERMISSIONDENIED"), to filter an error by its kind
- - a message (too often considered as sufficient for error description), humanly understandable
+ - a message (too often considered as sufficient alone for error handling), humanly understandable
  - contexts, from wich error was triggered (stacking a new context each time we forward the error)
  - attributes, essential for error reproducing purposes
 
-This package ensure the ability to manage errors following this pattern painlessly.
+This package ensures the ability to manage errors following this pattern painlessly.
 */
 package eerror
 
