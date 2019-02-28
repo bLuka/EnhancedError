@@ -126,6 +126,10 @@ func (e *Eerror) getInitialError() interface{} {
 }
 
 func fromError(err *interface{}) Eerror {
+	if eerr, ok := parse(err); ok {
+		return eerr
+	}
+
 	eerr := Eerror{
 		err,
 
