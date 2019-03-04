@@ -47,7 +47,7 @@ func (e Eerror) Error() string {
 
 			var serializedValue = serialize(value)
 			if reflect.TypeOf(value).Kind() == reflect.String {
-				serializedValue = escapeString(serializedValue, "[]():,")
+				serializedValue = escapeString(serializedValue, "[]:,")
 			}
 			attributesString += escapeString(key, "[]:,") + ": " + serializedValue
 		}
@@ -69,7 +69,7 @@ func (e Eerror) Map() map[string]interface{} {
 }
 
 func escapeString(s string, chars string) string {
-	if strings.IndexAny(s, chars+"\"") != -1 {
+	if len(s) == 0 || strings.IndexAny(s, chars+"\"") != -1 {
 		return fmt.Sprintf("\"%s\"", strings.Replace(s, "\"", "\\\"", -1))
 	}
 	return s
