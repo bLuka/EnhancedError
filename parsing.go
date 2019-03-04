@@ -177,7 +177,7 @@ func parseEerrorContexts(s string) (contexts []string, ok bool, endPosition int)
 	parseContextName := func(s string, index int) (endPosition int, name string, e error) {
 		e = fmt.Errorf("Invalid")
 
-		if s[index] == ',' {
+		if s[index] == ';' {
 			return
 		}
 		if s[index] == '"' {
@@ -189,7 +189,7 @@ func parseEerrorContexts(s string) (contexts []string, ok bool, endPosition int)
 			endPosition += index + 1
 			name = s[index+1 : endPosition]
 		} else {
-			endPosition = strings.IndexAny(s[index:], ",)")
+			endPosition = strings.IndexAny(s[index:], ";)")
 			if endPosition == -1 {
 				return
 			}
@@ -201,7 +201,7 @@ func parseEerrorContexts(s string) (contexts []string, ok bool, endPosition int)
 		if s[endPosition] != ')' {
 			endPosition++
 		}
-		if s[endPosition-1:endPosition+1] == ",)" {
+		if s[endPosition-1:endPosition+1] == ";)" {
 			return
 		}
 
