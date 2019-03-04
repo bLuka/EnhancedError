@@ -54,7 +54,7 @@ func (e Eerror) Error() string {
 		attributesString += "]"
 	}
 
-	return fmt.Sprintf("%s: %s%s%s", escapeString(e.identifier, ":"), escapeString(e.message, "()"), contextString, attributesString)
+	return fmt.Sprintf("%s: %s%s%s", escapeString(e.identifier, ":"), escapeString(e.message, ":()[]"), contextString, attributesString)
 }
 
 // Map formats the error to a protocol-aware object, marshable without data loss
