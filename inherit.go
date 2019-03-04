@@ -3,6 +3,7 @@ package eerror
 import (
 	"fmt"
 	"reflect"
+	"runtime/debug"
 )
 
 const E_EXTERNALERROR = "E_EXTERNALERROR"
@@ -140,6 +141,7 @@ func fromError(err *interface{}) Eerror {
 		generateUniqueID(),
 	}
 
+	eerr.WithAttribute("stacktrace", string(debug.Stack()))
 	eerr.WithAttributes(
 		errorParsedAttributes...,
 	)

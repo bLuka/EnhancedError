@@ -2,6 +2,7 @@ package eerror
 
 import (
 	"fmt"
+	"runtime/debug"
 	"strconv"
 	"strings"
 )
@@ -38,7 +39,7 @@ func parse(err interface{}) (eerr Eerror, ok bool) {
 	}
 	s = s[endPos:]
 
-	return Eerror{
+	eerr = Eerror{
 		err,
 
 		errType,
@@ -47,7 +48,11 @@ func parse(err interface{}) (eerr Eerror, ok bool) {
 		attributes,
 
 		generateUniqueID(),
-	}, true
+	}
+	if _, ok := attributes["stacktrace"]; !ok {
+		eerr.WithAttribute("stacktrace", string(debug.Stack()))
+	}
+	return
 }
 
 func parseEerrorAttributes(s string) (attributes map[string]interface{}, ok bool, endPosition int) {

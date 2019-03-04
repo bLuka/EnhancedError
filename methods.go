@@ -2,6 +2,7 @@ package eerror
 
 import (
 	"fmt"
+	"runtime/debug"
 )
 
 /*
@@ -33,6 +34,7 @@ func NewError(identifier, message string, attributeKeyValPairs ...interface{}) E
 		generateUniqueID(),
 	}
 
+	e.WithAttribute("stacktrace", string(debug.Stack()))
 	e.WithAttributes(attributeKeyValPairs...)
 	return e
 }
