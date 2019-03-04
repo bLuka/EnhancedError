@@ -63,6 +63,9 @@ func (e *Eerror) WithAttributes(attributeKeyValPairs ...interface{}) {
 		if len(attributeKeyValPairs) > i+1 {
 			value = attributeKeyValPairs[i+1]
 		}
+		if e.attributes == nil {
+			e.attributes = make(map[string]interface{})
+		}
 		e.attributes[key] = value
 	}
 }
