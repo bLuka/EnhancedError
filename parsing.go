@@ -252,6 +252,9 @@ func parseEerrorMessage(s string) (message string, ok bool, endPosition int) {
 		if endPosition > 1 {
 			message = s[1 : endPosition-1]
 		}
+		if endPosition < len(s) && s[endPosition] == ' ' {
+			endPosition++
+		}
 	} else {
 		endPosition = strings.IndexAny(s[1:], "([")
 		if endPosition == -1 {

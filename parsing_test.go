@@ -50,6 +50,7 @@ func TestSerialization(t *testing.T) {
 			"E_SOMEERROR: message (context) [attribute: value, another attribute: value]",
 			"E_SOMEERROR: message (context) [attribute: (int)-1]",
 			"E_SOMEERROR: message (context) [attribute: \"(int)string value\"]",
+			"E_SOMEERROR: \"some long, and (very) [complex message]\" (context)",
 		} {
 			if eerr, ok = parse(test); !ok {
 				return
