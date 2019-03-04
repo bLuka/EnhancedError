@@ -2,6 +2,7 @@ package eerror
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 )
 
@@ -60,7 +61,7 @@ func parseEerrorAttributes(s string) (attributes map[string]interface{}, ok bool
 		return
 	}
 
-	parseAttribute := func(s string, index int) (endPosition int, name, value string, e error) {
+	parseAttribute := func(s string, index int) (endPosition int, name string, value interface{}, e error) {
 		e = fmt.Errorf("Invalid")
 
 		if s[index] == '"' {
@@ -107,6 +108,30 @@ func parseEerrorAttributes(s string) (attributes map[string]interface{}, ok bool
 			value = s[index:endPosition]
 		}
 
+		if indexLastPar := strings.IndexByte(value.(string)[1:], ')'); value.(string)[0] == '(' && indexLastPar != -1 && indexLastPar < len(value.(string))-1 {
+			t := value.(string)[1 : indexLastPar-1]
+
+			switch t {
+			case "string":
+				value = value.(string)[indexLastPar+1:]
+			case "bool":
+				value, e = strconv.ParseBool(value.(string)[indexLastPar+1:])
+				if e != nil {
+					return
+				}
+			case "float", "float32", "float64":
+				value, e = strconv.ParseFloat(value.(string)[indexLastPar+1:], 64)
+				if e != nil {
+					return
+				}
+			case "int", "uint":
+				value, e = strconv.Atoi(value.(string)[indexLastPar+1:])
+				if e != nil {
+					return
+				}
+			}
+		}
+
 		e = nil
 		if s[endPosition] != ']' {
 			endPosition++
@@ -117,7 +142,8 @@ func parseEerrorAttributes(s string) (attributes map[string]interface{}, ok bool
 	var index int = 1
 	attributes = make(map[string]interface{})
 	for s[index] != ']' {
-		var name, value string
+		var name string
+		var value interface{}
 		var err error
 
 		index, name, value, err = parseAttribute(s, index)
